@@ -2,6 +2,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import { AuthProvider } from "@/AuthContext";
 
 // Google Fonts
 const geistSans = Geist({
@@ -34,9 +35,11 @@ export default function RootLayout({ children }) {
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
         suppressHydrationWarning={true} // prevent hydration mismatch warning
       >
+        <AuthProvider>
         <Navbar />
         <main className="mt-16">{children}</main> {/* mt-16 to prevent Navbar overlap */}
         <Footer />
+        </AuthProvider>
       </body>
     </html>
   );
