@@ -80,7 +80,7 @@ function AddProductContent() {
   return (
     <div className="p-10 max-w-7xl mx-auto relative">
       <Toaster position="top-right" />
-      <h1 className="text-3xl font-bold mb-8 text-center text-gray-800">Add Product</h1>
+      <h1 className="text-3xl font-bold mb-8 text-center text-blue-800">Add Product</h1>
 
       {/* Services Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">

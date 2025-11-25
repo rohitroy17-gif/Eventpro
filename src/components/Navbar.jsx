@@ -35,10 +35,10 @@ export default function Navbar() {
 
         {/* Desktop Menu */}
         <div className="hidden md:flex items-center gap-6 font-medium">
-          <Link href="/" className="hover:text-pink-600">Home</Link>
-          <Link href="/allservices" className="hover:text-pink-600">Services</Link>
-          <Link href="/booking" className="hover:text-pink-600">Booking</Link>
-          <Link href="/addproduct" className="hover:text-pink-600">Add Product</Link>
+          <Link href="/" className="hover:text-pink-600 text-blue-800">Home</Link>
+          <Link href="/allservices" className="hover:text-pink-600 text-blue-800">Services</Link>
+          <Link href="/booking" className="hover:text-pink-600 text-blue-800">Booking</Link>
+          <Link href="/addproduct" className="hover:text-pink-600 text-blue-800">Add Product</Link>
 
           {!user ? (
             <>
@@ -66,21 +66,21 @@ export default function Navbar() {
                   alt="Profile"
                   className="w-8 h-8 rounded-full object-cover"
                 />
-                <span>{user.displayName || "User"}</span>
+                <span className="text-blue-800">{user.displayName || "User"}</span>
               </button>
 
               {dropdown && (
                 <div className="absolute right-0 mt-2 w-48 bg-white shadow-lg rounded-md py-2 z-50">
                   <Link
                     href="/myprofile"
-                    className="block px-4 py-2 hover:bg-pink-50"
+                    className="block px-4 py-2 hover:bg-pink-50 text-blue-800"
                   >
                     My Profile
                   </Link>
-                  <Link href="/ordered" className="block px-4 py-2 hover:bg-pink-50">Ordered Items</Link>
+                  <Link href="/ordered" className="block px-4 py-2 hover:bg-pink-50 text-blue-800">Ordered Items</Link>
                   <button
                     onClick={handleLogout}
-                    className="block w-full text-left px-4 py-2 hover:bg-pink-50"
+                    className="block w-full text-left px-4 py-2 hover:bg-pink-50 text-blue-800"
                   >
                     Logout
                   </button>
@@ -102,7 +102,7 @@ export default function Navbar() {
           <Link href="/" onClick={() => setOpen(false)}>Home</Link>
           <Link href="/allservices" onClick={() => setOpen(false)}>Services</Link>
           <Link href="/booking" onClick={() => setOpen(false)}>Booking</Link>
-          <Link href="/addproduct" className="hover:text-pink-600">Add Product</Link>
+          <Link href="/addproduct" className="hover:text-pink-600 text-blue-800">Add Product</Link>
 
           {!user ? (
             <>

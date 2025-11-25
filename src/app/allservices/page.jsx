@@ -15,7 +15,7 @@ export default function AllServices() {
 
   return (
     <div className="p-10 max-w-7xl mx-auto">
-      <h1 className="text-3xl font-bold text-center mb-8">All Services</h1>
+      <h1 className="text-3xl font-bold text-center mb-8 text-blue-800">All Services</h1>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
         {services.map((service) => (
@@ -29,7 +29,7 @@ export default function AllServices() {
               className="w-full h-48 object-cover"
             />
             <div className="p-4">
-              <h3 className="text-xl font-semibold">{service.title}</h3>
+              <h3 className="text-xl font-semibold text-gray-400">{service.title}</h3>
               <p className="text-gray-500 text-sm mt-1">{service.type}</p>
               <p className="text-gray-500 text-sm mt-1">
                 Date: {new Date(service.date).toLocaleDateString()}

@@ -66,17 +66,17 @@ export default function ServiceDetailsPage() {
           <span className="px-3 py-1 bg-blue-100 text-blue-700 rounded-full text-sm font-medium">
             {service.type}
           </span>
-          <span className="text-sm">
+          <span className="text-sm text-gray-400">
             📅 {new Date(service.date).toLocaleDateString()}
           </span>
         </div>
         <div>
           <h2 className="text-xl font-semibold mb-2">Description</h2>
-          <p className="text-gray-700 leading-relaxed">{service.description}</p>
+          <p className="text-gray-400 leading-relaxed">{service.description}</p>
         </div>
         <div>
           <h2 className="text-xl font-semibold mb-2">Location</h2>
-          <p className="text-gray-700">{service.location}</p>
+          <p className="text-gray-400">{service.location}</p>
         </div>
       </div>
 
@@ -84,8 +84,8 @@ export default function ServiceDetailsPage() {
         <div className="shadow-lg border rounded-xl p-6 sticky top-10 bg-white">
           <h2 className="text-xl font-bold mb-4">Service Info</h2>
           <p className="text-3xl font-bold text-green-600 mb-4">৳ {service.price}</p>
-          <div className="space-y-2 text-gray-700">
-            <p><strong>Type:</strong> {service.type}</p>
+          <div className="space-y-2 text-gray-600">
+            <p className="text-gray-600"><strong>Type:</strong> {service.type}</p>
             <p><strong>Date:</strong> {new Date(service.date).toLocaleDateString()}</p>
             <p><strong>Location:</strong> {service.location}</p>
           </div>
