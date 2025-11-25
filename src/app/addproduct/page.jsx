@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import ProtectedRoute from "@/components/ProtectedRoute";
 import toast, { Toaster } from "react-hot-toast";
 import { useRouter } from "next/navigation";
-import { ShoppingCart } from "lucide-react"; // Using lucide-react icon
+import { ShoppingCart } from "lucide-react";
 
 export default function AddProductPage() {
   return (
@@ -23,11 +23,13 @@ function AddProductContent() {
   const [showCartOverlay, setShowCartOverlay] = useState(false);
   const router = useRouter();
 
+  const apiUrl = process.env.NEXT_PUBLIC_API_URL || "https://event-pro-server.vercel.app";
+
   // Fetch services
   useEffect(() => {
     const fetchServices = async () => {
       try {
-        const res = await fetch("https://event-pro-server.vercel.app/services");
+        const res = await fetch(`${apiUrl}/services`);
         if (!res.ok) throw new Error("Failed to fetch services");
         const data = await res.json();
         setServices(data);
@@ -39,7 +41,7 @@ function AddProductContent() {
       }
     };
     fetchServices();
-  }, []);
+  }, [apiUrl]);
 
   const addToCart = (service) => {
     setCart((prev) => [...prev, service]);
@@ -76,7 +78,7 @@ function AddProductContent() {
   if (loading) return <p className="p-10 text-center">Loading services...</p>;
 
   return (
-    <div className="p-10 max-w-6xl mx-auto relative">
+    <div className="p-10 max-w-7xl mx-auto relative">
       <Toaster position="top-right" />
       <h1 className="text-3xl font-bold mb-8 text-center text-gray-800">Add Product</h1>
 
@@ -89,13 +91,12 @@ function AddProductContent() {
           >
             <div className="relative">
               <img
-  src={service.image || service.img || "/default-profile.png"}
-  alt={service.title}
-  className="w-full h-48 object-cover rounded"
-/>
-
+                src={service.image || service.img || "/default-profile.png"}
+                alt={service.title}
+                className="w-full h-48 object-cover rounded"
+              />
               <span className="absolute top-3 left-3 bg-blue-600 text-white text-xs font-semibold px-3 py-1 rounded-full shadow-lg">
-                ${service.price}
+                ৳ {service.price}
               </span>
             </div>
 
@@ -139,11 +140,12 @@ function AddProductContent() {
                 className="flex justify-between items-center py-2 px-3 bg-gray-50 rounded shadow-sm border"
               >
                 <span>{item.title}</span>
-                <span className="font-semibold">${item.price}</span>
+                <span className="font-semibold">৳ {item.price}</span>
               </li>
             ))}
           </ul>
-          <p className="text-lg font-semibold mb-3">Total: ${totalPrice}</p>
+          <p className="text-lg font-semibold mb-3">Total: ৳ {totalPrice}</p>
+
           {!showPayment ? (
             <button
               onClick={handleOrderNow}
@@ -174,6 +176,7 @@ function AddProductContent() {
     </div>
   );
 }
+
 
 
 

@@ -1,117 +1,51 @@
 "use client";
-
 import { useEffect, useState } from "react";
-import ProtectedRoute from "@/components/ProtectedRoute";
-import toast, { Toaster } from "react-hot-toast";
 
 export default function BookingPage() {
-  return (
-    <ProtectedRoute>
-      <BookingContent />
-    </ProtectedRoute>
-  );
-}
-
-function BookingContent() {
   const [bookings, setBookings] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+
+  const fetchBookings = async () => {
+    try {
+      const res = await fetch(`${apiUrl}/bookedservices`);
+      const data = await res.json();
+      setBookings(data);
+    } catch (err) {
+      console.error(err);
+    }
+  };
 
   useEffect(() => {
-    const fetchBookings = async () => {
-      try {
-        const res = await fetch("https://event-pro-server.vercel.app/bookedservices");
-        if (!res.ok) throw new Error("Failed to fetch bookings");
-        const data = await res.json();
-        // Add status field for frontend state
-        const dataWithStatus = data.map((b) => ({ ...b, status: "pending" }));
-        setBookings(dataWithStatus);
-      } catch (err) {
-        console.error(err);
-        toast.error("Failed to load bookings");
-      } finally {
-        setLoading(false);
-      }
-    };
+    if (!apiUrl) return;
     fetchBookings();
-  }, []);
+  }, [apiUrl]);
 
-  const handleDone = (id) => {
-    setBookings((prev) =>
-      prev.map((b) =>
-        b._id === id || b.id === id ? { ...b, status: "done" } : b
-      )
-    );
-    toast.success("Booking marked as done");
+  const handleDelete = async (id) => {
+    try {
+      await fetch(`${apiUrl}/bookedservices/${id}`, { method: "DELETE" });
+      setBookings(bookings.filter(b => b._id !== id));
+    } catch (err) {
+      console.error(err);
+    }
   };
-
-  const handleCancel = (id) => {
-    // Remove booking from frontend state
-    setBookings((prev) => prev.filter((b) => b._id !== id && b.id !== id));
-    toast.success("Booking cancelled successfully");
-
-    // Optional: DELETE request to backend
-    fetch(`https://event-pro-server.vercel.app/bookedservices/${id}`, {
-      method: "DELETE",
-    }).catch((err) => console.error("Failed to delete booking", err));
-  };
-
-  if (loading)
-    return <p className="p-10 text-center text-gray-600">Loading your bookings...</p>;
-  if (bookings.length === 0)
-    return <p className="p-10 text-center text-gray-600">No bookings found.</p>;
 
   return (
-    <div className="p-10 max-w-6xl mx-auto">
-      <Toaster position="top-right" />
-      <h1 className="text-3xl font-bold mb-8 text-center text-gray-800">
-        Your Booked Services
-      </h1>
-
+    <div className="p-10">
+      <h1 className="text-3xl font-bold mb-6">Your Booked Services</h1>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        {bookings.map((item) => (
-          <div
-            key={item._id || item.id}
-            className={`relative bg-white border border-gray-200 rounded-xl shadow-md overflow-hidden transform transition-all duration-300 hover:scale-105 hover:shadow-2xl hover:border-blue-400 cursor-pointer ${
-              item.status === "done" ? "opacity-70" : ""
-            }`}
-          >
-            <div className="relative overflow-hidden rounded-t-xl">
-              <img
+        {bookings.map(item => (
+          <div key={item._id} className="border rounded-lg p-4 shadow">
+            <img
                 src={item.image || item.img || "/default-profile.png"}
                 alt={item.title}
                 className="w-full h-40 object-cover rounded"
-                />
+                />
+            <h2 className="text-xl font-bold mt-2">{item.title}</h2>
+            <p className="text-gray-600">{item.location}</p>
 
-            </div>
-
-            <div className="p-5 space-y-2">
-              <h2 className="text-xl font-bold text-gray-800">{item.title}</h2>
-              <p className="text-gray-600">{item.location}</p>
-              <p
-                className={`font-medium mt-1 ${
-                  item.status === "done" ? "text-green-600" : "text-gray-500"
-                }`}
-              >
-                Status: {item.status}
-              </p>
-
-              <div className="flex gap-3 mt-4">
-                <button
-                  onClick={() => handleDone(item._id || item.id)}
-                  disabled={item.status === "done"}
-                  className={`flex-1 bg-green-500 text-white py-2 rounded-lg transition shadow ${
-                    item.status === "done" ? "opacity-50 cursor-not-allowed" : "hover:bg-green-600"
-                  }`}
-                >
-                  ✅ DONE
-                </button>
-                <button
-                  onClick={() => handleCancel(item._id || item.id)}
-                  className="flex-1 bg-red-500 text-white py-2 rounded-lg hover:bg-red-600 transition shadow"
-                >
-                  ❌ CANCEL
-                </button>
-              </div>
+            <div className="flex gap-3 mt-4">
+              <button onClick={() => handleDelete(item._id)} className="flex-1 bg-green-500 text-white py-2 rounded hover:bg-green-600 transition">✅ DONE</button>
+              <button onClick={() => handleDelete(item._id)} className="flex-1 bg-red-500 text-white py-2 rounded hover:bg-red-600 transition">❌ CANCEL</button>
             </div>
           </div>
         ))}
@@ -119,8 +53,6 @@ function BookingContent() {
     </div>
   );
 }
-
-
 
 
 
