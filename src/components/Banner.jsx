@@ -47,7 +47,7 @@ export default function Banner() {
           <button className="px-6 py-3 bg-white text-pink-600 font-semibold rounded-lg shadow-lg hover:scale-105 hover:bg-pink-50 transition-transform">
             Learn More
           </button>
-          <Link href="/booking"><button className="px-6 py-3 bg-pink-600 text-white font-semibold rounded-lg shadow-lg hover:scale-105 hover:bg-pink-700 transition-transform">
+          <Link href="/allservices"><button className="px-6 py-3 bg-pink-600 text-white font-semibold rounded-lg shadow-lg hover:scale-105 hover:bg-pink-700 transition-transform">
             Create Booking
           </button></Link>
         </motion.div>

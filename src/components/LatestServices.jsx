@@ -60,12 +60,11 @@ const LatestServices = () => {
 
                 <div className="flex justify-between items-center mt-3">
                   <p className="text-lg font-bold text-green-600">৳ {service.price}</p>
-
-                  <Link href={`/allservices/${service._id}`}>
-                    <button className="bg-blue-600 text-white text-sm px-4 py-2 rounded-lg shadow hover:bg-blue-700 transition">
-                      Book Now
-                    </button>
-                  </Link>
+                   <Link href={`/allservices/${service._id}`}
+                                  className="inline-block mt-4 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
+                                >
+                                  View Details
+                                </Link>
                 </div>
               </div>
             </div>
