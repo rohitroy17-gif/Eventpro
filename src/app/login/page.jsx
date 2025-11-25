@@ -43,28 +43,28 @@ export default function LoginPage() {
   };
 
   // Forgot Password
-  const handleResetPassword = async () => {
-    if (!email) {
-      toast.error("Please enter your email");
-      return;
-    }
-    setResetLoading(true);
-    try {
-      await sendPasswordResetEmail(auth, email);
-      toast.success("Password reset email sent!");
-    } catch (error) {
-      console.error("Reset failed:", error);
-      if (error.code === "auth/user-not-found") {
-        toast.error("No user found with this email");
-      } else if (error.code === "auth/invalid-email") {
-        toast.error("Invalid email address");
-      } else {
-        toast.error("Failed to send reset email");
-      }
-    } finally {
-      setResetLoading(false);
-    }
-  };
+  // const handleResetPassword = async () => {
+  //   if (!email) {
+  //     toast.error("Please enter your email");
+  //     return;
+  //   }
+  //   setResetLoading(true);
+  //   try {
+  //     await sendPasswordResetEmail(auth, email);
+  //     toast.success("Password reset email sent!");
+  //   } catch (error) {
+  //     console.error("Reset failed:", error);
+  //     if (error.code === "auth/user-not-found") {
+  //       toast.error("No user found with this email");
+  //     } else if (error.code === "auth/invalid-email") {
+  //       toast.error("Invalid email address");
+  //     } else {
+  //       toast.error("Failed to send reset email");
+  //     }
+  //   } finally {
+  //     setResetLoading(false);
+  //   }
+  // };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100 px-4">
@@ -88,12 +88,12 @@ export default function LoginPage() {
             onChange={(e) => setPassword(e.target.value)}
             required
           />
-          <p
+          {/* <p
             onClick={handleResetPassword}
             className={`text-sm text-blue-600 cursor-pointer text-right hover:underline ${resetLoading ? "opacity-50 cursor-not-allowed" : ""}`}
           >
             {resetLoading ? "Sending..." : "Forgot Password?"}
-          </p>
+          </p> */}
           <button
             type="submit"
             disabled={loading}
