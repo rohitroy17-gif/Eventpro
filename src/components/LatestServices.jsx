@@ -25,10 +25,11 @@ const LatestServices = () => {
             {/* Image */}
             <div className="relative">
               <img
-                src={service.image || "/default-profile.png"}
-                alt={service.title}
-                className="w-full h-56 object-cover"
-              />
+  src={service.image || service.img || "/default-profile.png"}
+  alt={service.title}
+  className="w-full h-48 object-cover rounded"
+/>
+
               {/* Type Badge */}
               <span className="absolute top-3 left-3 bg-blue-600 text-white text-xs font-semibold px-3 py-1 rounded-full shadow-lg">
                 {service.type}

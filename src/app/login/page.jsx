@@ -1,7 +1,8 @@
 "use client";
+
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
-import { signInWithEmailAndPassword, signInWithPopup } from "firebase/auth";
+import { signInWithEmailAndPassword, signInWithPopup, sendPasswordResetEmail } from "firebase/auth";
 import { auth, googleProvider } from "@/firebase.config";
 import toast, { Toaster } from "react-hot-toast";
 import Link from "next/link";
@@ -11,6 +12,7 @@ export default function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
+  const [resetLoading, setResetLoading] = useState(false);
 
   // Email/password login
   const handleLogin = async (e) => {
@@ -21,6 +23,7 @@ export default function LoginPage() {
       toast.success("Login successful!");
       router.push("/"); // navigate to home
     } catch (error) {
+      console.error(error);
       toast.error(error.message);
     } finally {
       setLoading(false);
@@ -34,21 +37,37 @@ export default function LoginPage() {
       toast.success("Login successful!");
       router.push("/"); // navigate to home
     } catch (error) {
+      console.error(error);
       toast.error(error.message);
     }
   };
 
-  // Redirect to Forgot Password page with email pre-filled
-  const handleForgotPassword = () => {
+  // Forgot Password
+  const handleResetPassword = async () => {
     if (!email) {
-      toast.error("Please enter your email first!");
+      toast.error("Please enter your email");
       return;
     }
-    router.push(`/forgot-password?email=${email}`);
+    setResetLoading(true);
+    try {
+      await sendPasswordResetEmail(auth, email);
+      toast.success("Password reset email sent!");
+    } catch (error) {
+      console.error("Reset failed:", error);
+      if (error.code === "auth/user-not-found") {
+        toast.error("No user found with this email");
+      } else if (error.code === "auth/invalid-email") {
+        toast.error("Invalid email address");
+      } else {
+        toast.error("Failed to send reset email");
+      }
+    } finally {
+      setResetLoading(false);
+    }
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100">
+    <div className="min-h-screen flex items-center justify-center bg-gray-100 px-4">
       <Toaster position="top-right" />
       <div className="bg-white p-8 rounded-lg shadow-md w-full max-w-md">
         <h1 className="text-2xl font-bold mb-6 text-center">Login</h1>
@@ -56,7 +75,7 @@ export default function LoginPage() {
           <input
             type="email"
             placeholder="Email"
-            className="w-full border px-4 py-2 rounded-lg"
+            className="w-full border px-4 py-2 rounded-lg focus:outline-blue-500"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
@@ -64,17 +83,17 @@ export default function LoginPage() {
           <input
             type="password"
             placeholder="Password"
-            className="w-full border px-4 py-2 rounded-lg"
+            className="w-full border px-4 py-2 rounded-lg focus:outline-blue-500"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
           />
-          <Link href="/forgetpasswordpage"><p
-            onClick={handleForgotPassword}
-            className="text-sm text-blue-600 cursor-pointer text-right hover:underline"
+          <p
+            onClick={handleResetPassword}
+            className={`text-sm text-blue-600 cursor-pointer text-right hover:underline ${resetLoading ? "opacity-50 cursor-not-allowed" : ""}`}
           >
-            Forget Password?
-          </p></Link>
+            {resetLoading ? "Sending..." : "Forgot Password?"}
+          </p>
           <button
             type="submit"
             disabled={loading}
@@ -93,7 +112,7 @@ export default function LoginPage() {
 
         <p className="mt-4 text-center">
           Don't have an account?{" "}
-          <Link href="/register" className="text-blue-600 font-medium">
+          <Link href="/register" className="text-blue-600 font-medium hover:underline">
             Register
           </Link>
         </p>
@@ -101,3 +120,4 @@ export default function LoginPage() {
     </div>
   );
 }
+
