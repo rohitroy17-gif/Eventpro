@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import ProtectedRoute from "@/components/ProtectedRoute";
 import toast, { Toaster } from "react-hot-toast";
 import { useRouter } from "next/navigation";
+import { ShoppingCart } from "lucide-react"; // Using lucide-react icon
 
 export default function AddProductPage() {
   return (
@@ -19,6 +20,7 @@ function AddProductContent() {
   const [cart, setCart] = useState([]);
   const [totalPrice, setTotalPrice] = useState(0);
   const [showPayment, setShowPayment] = useState(false);
+  const [showCartOverlay, setShowCartOverlay] = useState(false);
   const router = useRouter();
 
   // Fetch services
@@ -66,6 +68,7 @@ function AddProductContent() {
     setCart([]);
     setTotalPrice(0);
     setShowPayment(false);
+    setShowCartOverlay(false);
 
     router.push("/ordered");
   };
@@ -73,7 +76,7 @@ function AddProductContent() {
   if (loading) return <p className="p-10 text-center">Loading services...</p>;
 
   return (
-    <div className="p-10 max-w-6xl mx-auto">
+    <div className="p-10 max-w-6xl mx-auto relative">
       <Toaster position="top-right" />
       <h1 className="text-3xl font-bold mb-8 text-center text-gray-800">Add Product</h1>
 
@@ -82,7 +85,7 @@ function AddProductContent() {
         {services.map((service) => (
           <div
             key={service._id}
-            className="bg-white rounded-xl border border-gray-200 shadow-md overflow-hidden transform transition-all duration-300 hover:scale-105 hover:shadow-2xl hover:border-blue-400 cursor-pointer"
+            className="bg-white rounded-xl border border-gray-200 shadow-md overflow-hidden transform transition-all duration-300 hover:scale-105 hover:shadow-2xl hover:border-blue-400 cursor-pointer relative"
           >
             <div className="relative">
               <img
@@ -113,55 +116,64 @@ function AddProductContent() {
         ))}
       </div>
 
-      {/* Cart Section */}
-      <div className="mt-12 border p-6 rounded-xl shadow-lg bg-gray-50">
-        <h2 className="text-2xl font-bold mb-4">Your Cart</h2>
-        {cart.length === 0 ? (
-          <p className="text-gray-600">Cart is empty</p>
-        ) : (
+      {/* Floating Cart Icon */}
+      {cart.length > 0 && (
+        <button
+          onClick={() => setShowCartOverlay(!showCartOverlay)}
+          className="fixed bottom-8 right-8 bg-blue-600 p-4 rounded-full shadow-lg text-white hover:bg-blue-700 transition flex items-center justify-center z-50"
+        >
+          <ShoppingCart size={24} />
+          <span className="ml-2 text-white font-semibold">{cart.length}</span>
+        </button>
+      )}
+
+      {/* Cart Overlay */}
+      {showCartOverlay && (
+        <div className="fixed bottom-24 right-8 w-80 max-h-[70vh] bg-white border shadow-lg rounded-xl p-4 overflow-y-auto z-50">
+          <h2 className="text-xl font-bold mb-3">Your Cart</h2>
           <ul className="mb-4 space-y-2">
             {cart.map((item, idx) => (
               <li
                 key={idx}
-                className="flex justify-between items-center py-2 px-3 bg-white rounded shadow-sm border"
+                className="flex justify-between items-center py-2 px-3 bg-gray-50 rounded shadow-sm border"
               >
                 <span>{item.title}</span>
                 <span className="font-semibold">${item.price}</span>
               </li>
             ))}
           </ul>
-        )}
-        <p className="text-xl font-semibold mb-4">Total: ${totalPrice}</p>
-
-        {!showPayment ? (
-          <button
-            onClick={handleOrderNow}
-            className="w-full bg-blue-600 text-white py-3 rounded-lg shadow hover:bg-blue-700 transition"
-          >
-            Order Now
-          </button>
-        ) : (
-          <div>
-            <h3 className="text-lg font-semibold mb-3">Select Payment Method:</h3>
-            <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
-              {["Bkash", "Nagad", "Rocket", "Bank A", "Bank B", "Bank C"].map(
-                (method) => (
-                  <button
-                    key={method}
-                    onClick={() => handlePayment(method)}
-                    className="py-2 px-4 border rounded-lg hover:bg-blue-100 transition text-gray-700 font-medium"
-                  >
-                    {method}
-                  </button>
-                )
-              )}
+          <p className="text-lg font-semibold mb-3">Total: ${totalPrice}</p>
+          {!showPayment ? (
+            <button
+              onClick={handleOrderNow}
+              className="w-full bg-blue-600 text-white py-2 rounded-lg shadow hover:bg-blue-700 transition"
+            >
+              Order Now
+            </button>
+          ) : (
+            <div>
+              <h3 className="text-lg font-semibold mb-3">Select Payment Method:</h3>
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
+                {["Bkash", "Nagad", "Rocket", "Bank A", "Bank B", "Bank C"].map(
+                  (method) => (
+                    <button
+                      key={method}
+                      onClick={() => handlePayment(method)}
+                      className="py-2 px-3 border rounded-lg hover:bg-blue-100 transition text-gray-700 font-medium"
+                    >
+                      {method}
+                    </button>
+                  )
+                )}
+              </div>
             </div>
-          </div>
-        )}
-      </div>
+          )}
+        </div>
+      )}
     </div>
   );
 }
+
 
 
 
