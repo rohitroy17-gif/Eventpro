@@ -1,44 +1,43 @@
 "use client";
 
 import { createContext, useContext, useEffect, useState } from "react";
-import { auth } from "./firebase.config"; // your firebase config
+import { auth } from "./firebase.config";
 import { onAuthStateChanged, signOut, updateProfile } from "firebase/auth";
 
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-  const [user, setUser] = useState(null);       // Store the current user
-  const [loading, setLoading] = useState(true); // Loading state for auth
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
 
-  // Listen to auth state changes
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       setUser(currentUser);
       setLoading(false);
     });
-
     return () => unsubscribe();
   }, []);
 
-  // Logout function
   const logout = async () => {
     await signOut(auth);
-    setUser(null); // Clear user on logout
+    setUser(null);
   };
 
-  // Update user profile (name + photo)
   const updateUserProfile = async (name, photoURL) => {
     if (!auth.currentUser) throw new Error("No user logged in");
     await updateProfile(auth.currentUser, { displayName: name, photoURL });
-    setUser({ ...auth.currentUser }); // Update state
+    setUser({ ...auth.currentUser });
   };
 
   return (
-    <AuthContext.Provider value={{ user, updateUserProfile, logout, loading }}>
+    <AuthContext.Provider value={{ user, loading, logout, updateUserProfile }}>
       {children}
     </AuthContext.Provider>
   );
 };
 
-// Custom hook to use auth context
+// OLD hook — used in Navbar (KEEP IT)
 export const useAuth = () => useContext(AuthContext);
+
+// NEW hook — used in PrivateRoute
+export const useAuthContext = () => useContext(AuthContext);

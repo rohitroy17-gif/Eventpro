@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useState } from "react";
 import { Menu, X } from "lucide-react";
-import { useAuth } from "@/AuthContext"; // Make sure your AuthContext exists
+import { useAuth } from "@/AuthProvider"; // Make sure your AuthContext exists
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 
@@ -38,6 +38,7 @@ export default function Navbar() {
           <Link href="/" className="hover:text-pink-600">Home</Link>
           <Link href="/allservices" className="hover:text-pink-600">Services</Link>
           <Link href="/booking" className="hover:text-pink-600">Booking</Link>
+          <Link href="/addproduct" className="hover:text-pink-600">Add Product</Link>
 
           {!user ? (
             <>
@@ -76,6 +77,7 @@ export default function Navbar() {
                   >
                     My Profile
                   </Link>
+                  <Link href="/ordered" className="block px-4 py-2 hover:bg-pink-50">Ordered Items</Link>
                   <button
                     onClick={handleLogout}
                     className="block w-full text-left px-4 py-2 hover:bg-pink-50"
@@ -100,6 +102,7 @@ export default function Navbar() {
           <Link href="/" onClick={() => setOpen(false)}>Home</Link>
           <Link href="/allservices" onClick={() => setOpen(false)}>Services</Link>
           <Link href="/booking" onClick={() => setOpen(false)}>Booking</Link>
+          <Link href="/addproduct" className="hover:text-pink-600">Add Product</Link>
 
           {!user ? (
             <>

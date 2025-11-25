@@ -1,9 +1,20 @@
 "use client";
+
 import React, { useState, useEffect } from "react";
 import { useRouter, useParams } from "next/navigation";
 import toast, { Toaster } from "react-hot-toast";
+import ProtectedRoute from "@/components/ProtectedRoute";
 
 export default function ServiceDetails() {
+  return (
+    <ProtectedRoute>
+      <ServiceDetailsContent />
+    </ProtectedRoute>
+  );
+}
+
+// Move original logic to a child component
+function ServiceDetailsContent() {
   const router = useRouter();
   const params = useParams();
   const { id } = params;
@@ -43,7 +54,7 @@ export default function ServiceDetails() {
 
       if (response.ok) {
         toast.success("Service booked successfully!");
-        setTimeout(() => router.push("/booking"), 1500);
+        setTimeout(() => router.push("/booking"), 1200);
       } else {
         toast.error("Booking failed. Try again!");
       }
@@ -70,7 +81,9 @@ export default function ServiceDetails() {
           <span className="px-3 py-1 bg-blue-100 text-blue-700 rounded-full text-sm font-medium">
             {service.type}
           </span>
-          <span className="text-sm">📅 {new Date(service.date).toLocaleDateString()}</span>
+          <span className="text-sm">
+            📅 {new Date(service.date).toLocaleDateString()}
+          </span>
         </div>
 
         <div>
@@ -91,9 +104,15 @@ export default function ServiceDetails() {
           <p className="text-3xl font-bold text-green-600 mb-4">${service.price}</p>
 
           <div className="space-y-2 text-gray-700">
-            <p><strong>Type:</strong> {service.type}</p>
-            <p><strong>Date:</strong> {new Date(service.date).toLocaleDateString()}</p>
-            <p><strong>Location:</strong> {service.location}</p>
+            <p>
+              <strong>Type:</strong> {service.type}
+            </p>
+            <p>
+              <strong>Date:</strong> {new Date(service.date).toLocaleDateString()}
+            </p>
+            <p>
+              <strong>Location:</strong> {service.location}
+            </p>
           </div>
 
           <button
@@ -111,6 +130,7 @@ export default function ServiceDetails() {
     </div>
   );
 }
+
 
 
 

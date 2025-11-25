@@ -1,8 +1,8 @@
-// src/components/ProtectedRoute.jsx
 "use client";
-import { useEffect } from "react";
+
+import { useAuth } from "@/AuthProvider";
 import { useRouter } from "next/navigation";
-import { useAuth } from "@/AuthContext";
+import { useEffect } from "react";
 
 export default function ProtectedRoute({ children }) {
   const { user, loading } = useAuth();
@@ -10,16 +10,18 @@ export default function ProtectedRoute({ children }) {
 
   useEffect(() => {
     if (!loading && !user) {
-      router.push("/login"); // redirect non-logged-in users
+      router.replace("/login");
     }
-  }, [user, loading, router]);
+  }, [loading, user]);
 
-  if (loading || !user) return <p className="p-10">Checking authentication...</p>;
+  if (loading) {
+    return <p className="text-center mt-10">Checking authentication...</p>;
+  }
+
+  if (!user) return null;
 
   return children;
 }
-
-
 
 
 

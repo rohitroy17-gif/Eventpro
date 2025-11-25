@@ -1,11 +1,21 @@
 "use client";
+
 import { useEffect, useState } from "react";
+import ProtectedRoute from "@/components/ProtectedRoute";
 
 export default function BookingPage() {
+  return (
+    <ProtectedRoute>
+      <BookingContent />
+    </ProtectedRoute>
+  );
+}
+
+// Move your original Booking page logic into a separate component
+function BookingContent() {
   const [bookings, setBookings] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  // Fetch bookings
   const fetchBookings = async () => {
     try {
       const res = await fetch("http://localhost:5000/bookedservices");
@@ -23,7 +33,6 @@ export default function BookingPage() {
     fetchBookings();
   }, []);
 
-  // Delete booking
   const handleDelete = async (id) => {
     try {
       const res = await fetch(`http://localhost:5000/bookedservices/${id}`, {
@@ -36,13 +45,8 @@ export default function BookingPage() {
     }
   };
 
-  if (loading) {
-    return <p className="p-10 text-center">Loading your bookings...</p>;
-  }
-
-  if (bookings.length === 0) {
-    return <p className="p-10 text-center">No bookings found.</p>;
-  }
+  if (loading) return <p className="p-10 text-center">Loading your bookings...</p>;
+  if (bookings.length === 0) return <p className="p-10 text-center">No bookings found.</p>;
 
   return (
     <div className="p-10">
@@ -79,6 +83,7 @@ export default function BookingPage() {
     </div>
   );
 }
+
 
 
 

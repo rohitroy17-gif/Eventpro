@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
 import Link from "next/link";
-import { useAuth } from "@/AuthContext";
+import { useAuth } from "@/AuthProvider";
 
 export default function MyProfile() {
   const { user } = useAuth();
