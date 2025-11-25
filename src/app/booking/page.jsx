@@ -19,7 +19,7 @@ function BookingContent() {
   useEffect(() => {
     const fetchBookings = async () => {
       try {
-        const res = await fetch("http://localhost:5000/bookedservices");
+        const res = await fetch("https://event-pro-server.vercel.app/bookedservices");
         if (!res.ok) throw new Error("Failed to fetch bookings");
         const data = await res.json();
         // Add status field for frontend state
@@ -50,7 +50,7 @@ function BookingContent() {
     toast.success("Booking cancelled successfully");
 
     // Optional: DELETE request to backend
-    fetch(`http://localhost:5000/bookedservices/${id}`, {
+    fetch(`https://event-pro-server.vercel.app/bookedservices/${id}`, {
       method: "DELETE",
     }).catch((err) => console.error("Failed to delete booking", err));
   };

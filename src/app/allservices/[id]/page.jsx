@@ -27,7 +27,7 @@ function ServiceDetailsContent() {
 
     const fetchService = async () => {
       try {
-        const res = await fetch(`http://localhost:5000/services/${id}`);
+        const res = await fetch(`https://event-pro-server.vercel.app/services/${id}`);
         if (!res.ok) throw new Error("Failed to load service");
         const data = await res.json();
         setService(data);
@@ -47,7 +47,7 @@ function ServiceDetailsContent() {
 
   const handleBooking = async () => {
     try {
-      const response = await fetch(`http://localhost:5000/services/${id}/book`, {
+      const response = await fetch(`https://event-pro-server.vercel.app/services/${id}/book`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
       });
