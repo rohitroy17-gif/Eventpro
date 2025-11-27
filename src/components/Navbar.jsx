@@ -38,7 +38,7 @@ export default function Navbar() {
           <Link href="/" className="hover:text-pink-600 text-blue-800">Home</Link>
           <Link href="/allservices" className="hover:text-pink-600 text-blue-800">Services</Link>
           <Link href="/booking" className="hover:text-pink-600 text-blue-800">Booking</Link>
-          <Link href="/addproduct" className="hover:text-pink-600 text-blue-800">Add Product</Link>
+          <Link href="/addproduct" className="hover:text-pink-600 text-blue-800">Add Event</Link>
 
           {!user ? (
             <>
@@ -99,10 +99,10 @@ export default function Navbar() {
       {/* Mobile Menu */}
       {open && (
         <div className="md:hidden bg-white shadow-lg flex flex-col py-4 px-4 gap-4 text-lg font-medium">
-          <Link href="/" onClick={() => setOpen(false)}>Home</Link>
-          <Link href="/allservices" onClick={() => setOpen(false)}>Services</Link>
-          <Link href="/booking" onClick={() => setOpen(false)}>Booking</Link>
-          <Link href="/addproduct" className="hover:text-pink-600 text-blue-800">Add Product</Link>
+          <Link href="/" onClick={() => setOpen(false)} className="hover:text-pink-600 text-blue-800">Home</Link>
+          <Link href="/allservices" onClick={() => setOpen(false)} className="hover:text-pink-600 text-blue-800">Services</Link>
+          <Link href="/booking" onClick={() => setOpen(false)} className="hover:text-pink-600 text-blue-800">Booking</Link>
+          <Link href="/addproduct" className="hover:text-pink-600 text-blue-800">Add Event</Link>
 
           {!user ? (
             <>
@@ -123,10 +123,10 @@ export default function Navbar() {
             </>
           ) : (
             <>
-              <Link href="/myprofile" onClick={() => setOpen(false)}>My Profile</Link>
+              <Link href="/myprofile" onClick={() => setOpen(false)} className="hover:text-pink-600 text-blue-800">My Profile</Link>
               <button
                 onClick={() => { handleLogout(); setOpen(false); }}
-                className="text-left px-4 py-2 hover:bg-pink-50 w-full"
+                className="text-left px-4 py-2 hover:bg-pink-50 w-full text-blue-800"
               >
                 Logout
               </button>
